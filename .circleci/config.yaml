@@ -1,0 +1,29 @@
+# .circleci/config.yml
+version: 2.1
+
+executors:
+  docker-executor:
+    docker:
+      - image: cimg/python:3.9
+
+jobs:
+  build-and-push:
+    executor: docker-executor
+    steps:
+      - checkout
+      - setup_remote_docker:
+          docker_layer_caching: true
+      - run:
+          name: Build Docker Image
+          command: docker build -t your-dockerhub-username/python-sample-app-demo .
+      - run:
+          name: Login to DockerHub
+          command: echo "$DOCKERHUB_PASS" | docker login -u "$DOCKERHUB_USER" --password-stdin
+      - run:
+          name: Push Docker Image
+          command: docker push your-dockerhub-username/python-sample-app-demo
+
+workflows:
+  build:
+    jobs:
+      - build-and-push
