@@ -1,0 +1,10 @@
+image:
+  repository: chaharhimanshu59/python-sample-app-demo
+  tag: latest
+  pullPolicy: Always
+
+service:
+  type: ClusterIP
+  port: 5000
+
+containerPort: 5000
